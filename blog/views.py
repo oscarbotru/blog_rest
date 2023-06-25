@@ -1,8 +1,7 @@
-from rest_framework import generics
-from rest_framework.generics import CreateAPIView
+from rest_framework import generics, viewsets
 
-from blog.models import Article
-from blog.serializers import ArticleSerializer
+from blog.models import Article, Comment
+from blog.serializers import ArticleSerializer, CommentSerializer
 
 
 class ArticleListAPIView(generics.ListAPIView):
@@ -10,5 +9,20 @@ class ArticleListAPIView(generics.ListAPIView):
     queryset = Article.objects.all()
 
 
-class ArticleCreateAPIView(CreateAPIView):
+class ArticleCreateAPIView(generics.CreateAPIView):
     serializer_class = ArticleSerializer
+
+
+class ArticleUpdateAPIView(generics.UpdateAPIView):
+    model = Comment
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    queryset = Comment.objects.all()
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.query_params.get('pk'):
+            queryset = queryset.filter(article_id=int(self.request.query_params.get('pk')))
+
+        return queryset
