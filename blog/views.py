@@ -1,4 +1,6 @@
 from rest_framework import generics, viewsets
+from rest_framework.generics import CreateAPIView
+from rest_framework.response import Response
 
 from blog.models import Article, Comment
 from blog.serializers import ArticleSerializer, CommentSerializer
@@ -9,16 +11,17 @@ class ArticleListAPIView(generics.ListAPIView):
     queryset = Article.objects.all()
 
 
-class ArticleCreateAPIView(generics.CreateAPIView):
+class ArticleCreateAPIView(CreateAPIView):
     serializer_class = ArticleSerializer
 
 
 class ArticleUpdateAPIView(generics.UpdateAPIView):
-    model = Comment
+    serializer_class = ArticleSerializer
 
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
 
     def get_queryset(self):
         queryset = super().get_queryset()
