@@ -8,7 +8,7 @@ from blog.serializers import ArticleSerializer, CommentSerializer, LikeSerialize
 
 class ArticleListAPIView(generics.ListAPIView):
     serializer_class = ArticleSerializer
-    queryset = Article.objects.filter(is_published=True)
+    queryset = Article.objects.all()
 
 
 class ArticleCreateAPIView(CreateAPIView):
@@ -21,10 +21,6 @@ class ArticleUpdateAPIView(generics.UpdateAPIView):
 
 class ArticleDestroyAPIVIew(generics.DestroyAPIView):
     queryset = Article.objects.all()
-
-    def perform_destroy(self, instance):
-        instance.is_published = False
-        instance.save()
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -39,7 +35,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         return queryset
 
     def create(self, request, *args, **kwargs):
-        self.serializer_class = CommentCreateSerializer
+        self.serializer_class = CommentSerializer
         return super().create(request, *args, **kwargs)
 
 

@@ -29,7 +29,7 @@ class CommentCreateSerializer(serializers.ModelSerializer):
 
 
 class ArticleSerializer(serializers.ModelSerializer):
-    comments = CommentSerializer(many=True, read_only=True, source='comment_set')
+    comments = CommentSerializer(many=True, read_only=True)
     likes = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
