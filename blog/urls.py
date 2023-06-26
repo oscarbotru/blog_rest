@@ -1,7 +1,7 @@
 from django.urls import path
 
 from blog.apps import BlogConfig
-from blog.views import ArticleListAPIView, ArticleCreateAPIView, CommentViewSet, ArticleUpdateAPIView
+from blog.views import ArticleListAPIView, ArticleCreateAPIView, CommentViewSet, ArticleUpdateAPIView, LikeCreateAPIView
 from rest_framework.routers import DefaultRouter
 
 app_name = BlogConfig.name
@@ -14,4 +14,5 @@ urlpatterns = [
     path('', ArticleListAPIView.as_view(), name='article_list'),
     path('create/', ArticleCreateAPIView.as_view(), name='article_create'),
     path('update/<int:pk>/', ArticleUpdateAPIView.as_view(), name='article_update'),
+    path('like/', LikeCreateAPIView.as_view(), name='like'),
 ] + router.urls

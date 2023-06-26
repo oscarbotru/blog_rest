@@ -3,7 +3,7 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 
 from blog.models import Article, Comment
-from blog.serializers import ArticleSerializer, CommentSerializer
+from blog.serializers import ArticleSerializer, CommentSerializer, LikeSerializer
 
 
 class ArticleListAPIView(generics.ListAPIView):
@@ -29,3 +29,7 @@ class CommentViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(article_id=int(self.request.query_params.get('pk')))
 
         return queryset
+
+
+class LikeCreateAPIView(generics.CreateAPIView):
+    serializer_class = LikeSerializer
