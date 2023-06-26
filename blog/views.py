@@ -3,12 +3,12 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 
 from blog.models import Article, Comment
-from blog.serializers import ArticleSerializer, CommentSerializer, LikeSerializer
+from blog.serializers import ArticleSerializer, CommentSerializer, LikeSerializer, CommentCreateSerializer
 
 
 class ArticleListAPIView(generics.ListAPIView):
     serializer_class = ArticleSerializer
-    queryset = Article.objects.all()
+    queryset = Article.objects.filter(is_published=True)
 
 
 class ArticleCreateAPIView(CreateAPIView):
@@ -17,6 +17,14 @@ class ArticleCreateAPIView(CreateAPIView):
 
 class ArticleUpdateAPIView(generics.UpdateAPIView):
     serializer_class = ArticleSerializer
+
+
+class ArticleDestroyAPIVIew(generics.DestroyAPIView):
+    queryset = Article.objects.all()
+
+    def perform_destroy(self, instance):
+        instance.is_published = False
+        instance.save()
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -29,6 +37,10 @@ class CommentViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(article_id=int(self.request.query_params.get('pk')))
 
         return queryset
+
+    def create(self, request, *args, **kwargs):
+        self.serializer_class = CommentCreateSerializer
+        return super().create(request, *args, **kwargs)
 
 
 class LikeCreateAPIView(generics.CreateAPIView):

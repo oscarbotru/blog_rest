@@ -7,6 +7,8 @@ class Article(models.Model):
     title = models.CharField(max_length=250, verbose_name='Заголовок')
     body = models.TextField(verbose_name='Статья')
 
+    is_published = models.BooleanField(default=True, verbose_name='опубликовано')
+
     def __str__(self):
         return self.title
 
