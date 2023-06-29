@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from blog.models import Article, Comment
+from blog.permissions import AuthorOrManager
 from blog.serializers import ArticleSerializer, CommentSerializer, LikeSerializer, CommentCreateSerializer
 
 
@@ -16,15 +17,20 @@ class ArticleCreateAPIView(CreateAPIView):
     serializer_class = ArticleSerializer
     permission_classes = [IsAuthenticated]
 
+    def perform_create(self, serializer):
+        new_article = serializer.save()
+        new_article.author = self.request.user
+        new_article.save()
+
 
 class ArticleUpdateAPIView(generics.UpdateAPIView):
     serializer_class = ArticleSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AuthorOrManager]
 
 
 class ArticleDestroyAPIVIew(generics.DestroyAPIView):
     queryset = Article.objects.all()
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AuthorOrManager]
 
     def perform_destroy(self, instance):
         instance.is_published = False
@@ -45,7 +51,10 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         self.serializer_class = CommentCreateSerializer
-        return super().create(request, *args, **kwargs)
+        new_comment = super().create(request, *args, **kwargs)
+        new_comment.author = self.request.user
+        new_comment.save()
+        return new_comment
 
 
 class LikeCreateAPIView(generics.CreateAPIView):

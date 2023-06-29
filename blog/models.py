@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 
@@ -6,6 +7,8 @@ class Article(models.Model):
     body = models.TextField(verbose_name='Статья')
 
     is_published = models.BooleanField(default=True, verbose_name='опубликовано')
+
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.title
@@ -18,6 +21,8 @@ class Article(models.Model):
 class Comment(models.Model):
     article = models.ForeignKey(Article, on_delete=models.CASCADE, verbose_name='статья')
     comment = models.CharField(max_length=250, verbose_name='комментарий')
+
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
