@@ -25,7 +25,7 @@ class ArticleCreateAPIView(CreateAPIView):
 
 class ArticleUpdateAPIView(generics.UpdateAPIView):
     serializer_class = ArticleSerializer
-    permission_classes = [AuthorOrManager]
+    permission_classes = [IsAuthenticated]
 
 
 class ArticleDestroyAPIVIew(generics.DestroyAPIView):
@@ -51,10 +51,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         self.serializer_class = CommentCreateSerializer
-        new_comment = super().create(request, *args, **kwargs)
-        new_comment.author = self.request.user
-        new_comment.save()
-        return new_comment
+        return super().create(request, *args, **kwargs)
 
 
 class LikeCreateAPIView(generics.CreateAPIView):
