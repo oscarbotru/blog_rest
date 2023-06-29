@@ -1,5 +1,6 @@
 from rest_framework import generics, viewsets
 from rest_framework.generics import CreateAPIView
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from blog.models import Article, Comment
@@ -13,14 +14,17 @@ class ArticleListAPIView(generics.ListAPIView):
 
 class ArticleCreateAPIView(CreateAPIView):
     serializer_class = ArticleSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class ArticleUpdateAPIView(generics.UpdateAPIView):
     serializer_class = ArticleSerializer
+    permission_classes = [IsAuthenticated]
 
 
 class ArticleDestroyAPIVIew(generics.DestroyAPIView):
     queryset = Article.objects.all()
+    permission_classes = [IsAuthenticated]
 
     def perform_destroy(self, instance):
         instance.is_published = False
@@ -30,6 +34,7 @@ class ArticleDestroyAPIVIew(generics.DestroyAPIView):
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -45,3 +50,4 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 class LikeCreateAPIView(generics.CreateAPIView):
     serializer_class = LikeSerializer
+    permission_classes = [IsAuthenticated]
