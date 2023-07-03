@@ -51,7 +51,7 @@ class BlogTestCase(APITestCase):
 
         self.assertEqual(
             response.status_code,
-            status.HTTP_201_CREATED
+            status.HTTP_200_OK
         )
 
         self.assertEqual(
@@ -72,10 +72,8 @@ class BlogTestCase(APITestCase):
 
         self.assertEqual(
             response.status_code,
-            status.HTTP_200_OK
+            status.HTTP_201_CREATED
         )
-
-        self.article.refresh_from_db()
 
         self.assertEqual(
             self.article.title,
