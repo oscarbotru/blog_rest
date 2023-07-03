@@ -4,6 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from blog.models import Article, Comment
+from blog.paginators import MyPagination
 from blog.permissions import AuthorOrManager
 from blog.serializers import ArticleSerializer, CommentSerializer, LikeSerializer, CommentCreateSerializer
 
@@ -11,6 +12,7 @@ from blog.serializers import ArticleSerializer, CommentSerializer, LikeSerialize
 class ArticleListAPIView(generics.ListAPIView):
     serializer_class = ArticleSerializer
     queryset = Article.objects.filter(is_published=True)
+    pagination_class = MyPagination
 
 
 class ArticleCreateAPIView(CreateAPIView):

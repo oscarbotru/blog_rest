@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from blog.models import Article, Comment, Like
+from blog.validators import RudeWordValidator
 
 
 class LikeSerializer(serializers.ModelSerializer):
@@ -12,6 +13,7 @@ class LikeSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     likes = serializers.SerializerMethodField(read_only=True)
+    comment = serializers.CharField(source='comment', validators=RudeWordValidator)
 
     class Meta:
         model = Comment
