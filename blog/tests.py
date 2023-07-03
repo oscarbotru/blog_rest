@@ -37,3 +37,47 @@ class BlogTestCase(APITestCase):
                 }
             ]
         )
+
+    def test_create_article(self):
+        data = {
+            'title': 'new test',
+            'body': 'new test',
+        }
+
+        response = self.client.post(
+            reverse('blog:article_create'),
+            data
+        )
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_201_CREATED
+        )
+
+        self.assertEqual(
+            2,
+            Article.objects.all().count()
+        )
+
+    def test_update_article(self):
+        data = {
+            'title': 'update test',
+            'body': 'update test',
+        }
+
+        response = self.client.post(
+            reverse('blog:article_update', args=[self.article.pk]),
+            data
+        )
+
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_200_OK
+        )
+
+        self.article.refresh_from_db()
+
+        self.assertEqual(
+            self.article.title,
+            data['title']
+        )
