@@ -70,13 +70,9 @@ class LikeCreateAPIView(generics.CreateAPIView):
 class WeatherAPIView(APIView):
 
     def get(self, *args, **kwargs):
-        weather = None
-        response = requests.get('https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current_weather=true')
-        if response.status_code == status.HTTP_200_OK:
-            weather = response.json()
         return Response(
             data={
-                'weather': weather
+                'weather': requests.get('https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current_weather=true')
             },
             status=status.HTTP_200_OK
         )

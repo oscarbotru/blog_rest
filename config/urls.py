@@ -38,5 +38,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/blog/', include('blog.urls', namespace='blog')),
 
-    re_path(r'^docs/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-redoc'),
+    re_path(r'^docs/$', schema_view('swagger', cache_timeout=0), name='schema-redoc'),
 ]
