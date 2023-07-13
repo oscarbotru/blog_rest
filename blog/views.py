@@ -28,6 +28,7 @@ class ArticleCreateAPIView(CreateAPIView):
 class ArticleUpdateAPIView(generics.UpdateAPIView):
     serializer_class = ArticleSerializer
     permission_classes = [AuthorOrManager]
+    queryset = Article.objects.all()
 
 
 class ArticleDestroyAPIVIew(generics.DestroyAPIView):

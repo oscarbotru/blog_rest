@@ -13,7 +13,7 @@ class LikeSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     likes = serializers.SerializerMethodField(read_only=True)
-    comment = serializers.CharField(source='comment', validators=RudeWordValidator)
+    comment = serializers.CharField(validators=[RudeWordValidator])
 
     class Meta:
         model = Comment
