@@ -6,3 +6,4 @@ drf-yasg
 django-filter
 coreapi
 pyyaml
+requests
