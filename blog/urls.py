@@ -2,7 +2,7 @@ from django.urls import path
 
 from blog.apps import BlogConfig
 from blog.views import ArticleListAPIView, ArticleCreateAPIView, CommentViewSet, ArticleUpdateAPIView, \
-    LikeCreateAPIView, ArticleDestroyAPIVIew
+    LikeCreateAPIView, ArticleDestroyAPIVIew, WeatherAPIView
 from rest_framework.routers import DefaultRouter
 
 app_name = BlogConfig.name
@@ -20,4 +20,7 @@ urlpatterns = [
     path('delete/<int:pk>/', ArticleDestroyAPIVIew.as_view(), name='article_delete'),
     # likes
     path('like/', LikeCreateAPIView.as_view(), name='like'),
+
+    # weather
+    path('weather/', WeatherAPIView.as_view(), name='weather')
 ] + router.urls

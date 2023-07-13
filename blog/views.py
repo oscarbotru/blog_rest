@@ -1,7 +1,9 @@
-from rest_framework import generics, viewsets
+import requests
+from rest_framework import generics, viewsets, status
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from blog.models import Article, Comment
 from blog.paginators import MyPagination
@@ -63,3 +65,18 @@ class CommentViewSet(viewsets.ModelViewSet):
 class LikeCreateAPIView(generics.CreateAPIView):
     serializer_class = LikeSerializer
     permission_classes = [IsAuthenticated]
+
+
+class WeatherAPIView(APIView):
+
+    def get(self, *args, **kwargs):
+        weather = None
+        response = requests.get('https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&current_weather=true')
+        if response.status_code == status.HTTP_200_OK:
+            weather = response.json()
+        return Response(
+            data={
+                'weather': weather
+            },
+            status=status.HTTP_200_OK
+        )
