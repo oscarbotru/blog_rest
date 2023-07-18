@@ -1,6 +1,8 @@
 from django.conf import settings
 from django.db import models
 
+from blog.tasks import send_moderator_email
+
 
 class Article(models.Model):
     title = models.CharField(max_length=250, verbose_name='Заголовок')
@@ -32,6 +34,11 @@ class Comment(models.Model):
     class Meta:
         verbose_name = 'комментарий'
         verbose_name_plural = 'комментарии'
+
+    def save(self, *args, **kwargs):
+        if self.pk is None:
+            send_moderator_email.delay()
+        super().save(*args, **kwargs)
 
 
 class Like(models.Model):
