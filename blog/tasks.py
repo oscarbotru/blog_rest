@@ -1,5 +1,3 @@
-import datetime
-
 from celery import shared_task
 from django.conf import settings
 from django.core.mail import send_mail
@@ -17,10 +15,8 @@ def send_moderator_email():
     )
 
 
-@shared_task
 def send_moderator_likes_count():
     likes_count = Like.objects.all().count()
-    now = datetime.datetime.now()
     send_mail(
         subject='Количество лайков',
         message=f'На {now} количество лайков: {likes_count}',
